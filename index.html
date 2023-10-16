@@ -1,0 +1,184 @@
+<html>
+<head>
+  <title>Zodiac Structural Similarity</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+  <h1>Zodiac Structural Similarity</h1>
+  <div id="uploadContainer">
+    <label for="uploadImage" id="uploadLabel">Choose File</label>
+    <input type="file" id="uploadImage" accept="image/*">
+  </div>
+  <div id="loading" class="hidden">
+    <div class="loader"></div>
+    <p>Loading...</p>
+  </div>
+  <div id="result" class="hidden"></div>
+  <div id="uploadedImageContainer" class="hidden">
+    <h2>Uploaded Image</h2>
+    <img id="uploadedImage" src="" alt="Uploaded Image">
+  </div>
+  <script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+  const uploadImage = document.getElementById('uploadImage');
+  const uploadLabel = document.getElementById('uploadLabel');
+  const loadingDiv = document.getElementById('loading');
+  const resultDiv = document.getElementById('result');
+  const uploadedImageContainer = document.getElementById('uploadedImageContainer');
+  const uploadedImage = document.getElementById('uploadedImage');
+
+  uploadLabel.addEventListener('click', () => {
+    uploadImage.click();
+  });
+
+  uploadImage.addEventListener('change', (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = function (e) {
+      uploadedImage.src = e.target.result;
+
+      const image = new Image();
+
+      image.onload = function () {
+        showLoadingAnimation();
+        setTimeout(() => {
+          const structuralSimilarities = calculateStructuralSimilarity(image);
+          displayStructuralSimilarity(structuralSimilarities);
+          logMostSimilarSign(structuralSimilarities);
+          hideLoadingAnimation();
+          showUploadedImage();
+        }, 8000);
+      };
+
+      image.src = e.target.result;
+    };
+
+    reader.readAsDataURL(file);
+  });
+
+  function showLoadingAnimation() {
+    loadingDiv.classList.remove('hidden');
+    resultDiv.classList.add('hidden');
+    uploadedImageContainer.classList.add('hidden');
+  }
+
+  function hideLoadingAnimation() {
+    loadingDiv.classList.add('hidden');
+    resultDiv.classList.remove('hidden');
+    uploadedImageContainer.classList.remove('hidden');
+  }
+
+  function calculateStructuralSimilarity(uploadedImage) {
+    // Perform your structural similarity calculation (based on vertical and horizontal pixels)
+    // for each zodiac sign here
+    // This is just a placeholder example
+
+    const zodiacSigns = [
+      { name: 'Aries', similarity: Math.floor(Math.random() * 101) },
+      { name: 'Taurus', similarity: Math.floor(Math.random() * 101) },
+      { name: 'Gemini', similarity: Math.floor(Math.random() * 101) },
+      { name: 'Cancer', similarity: Math.floor(Math.random() * 101) },
+      { name: 'Leo', similarity: Math.floor(Math.random() * 101) },
+      { name: 'Virgo', similarity: Math.floor(Math.random() * 101) },
+      { name: 'Libra', similarity: Math.floor(Math.random() * 101) },
+      { name: 'Scorpio', similarity: Math.floor(Math.random() * 101) },
+      { name: 'Sagittarius', similarity: Math.floor(Math.random() * 101) },
+      { name: 'Capricorn', similarity: Math.floor(Math.random() * 101) },
+      { name: 'Aquarius', similarity: Math.floor(Math.random() * 101) },
+      { name: 'Pisces', similarity: Math.floor(Math.random() * 101) },
+      // Add more signs and their structural similarity values here
+    ];
+
+    return zodiacSigns;
+  }
+
+  function displayStructuralSimilarity(structuralSimilarities) {
+  
+
+    result = document.getElementById('result');
+    result.innerHTML = '';
+
+    structuralSimilarities.forEach(sign => {
+      const signDiv = document.createElement('div');
+      signDiv.innerHTML = `${sign.name}: ${sign.similarity}%`;
+      result.appendChild(signDiv);
+    });
+  }
+
+  function logMostSimilarSign(structuralSimilarities) {
+    const sortedSimilarities = structuralSimilarities.sort((a, b) => b.similarity - a.similarity);
+    const mostSimilarSign = sortedSimilarities[0].name;
+    console.log('Most similar sign:', mostSimilarSign);
+  }
+
+  function showUploadedImage() {
+    uploadedImageContainer.classList.remove('hidden');
+  }
+});
+  </script>
+  <style>
+    h1 {
+  text-align: center;
+}
+
+h2 {
+  text-align: center;
+}
+
+.hidden {
+  display: none;
+}
+
+#uploadContainer {
+  text-align: center;
+  margin-top: 20px;
+}
+
+#uploadLabel {
+  padding: 10px 20px;
+  background-color: #3498db;
+  color: #fff;
+  cursor: pointer;
+}
+
+#uploadImage {
+  display: none;
+}
+
+#loading {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.loader {
+  border: 8px solid #f3f3f3; /* Light gray */
+  border-top: 8px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 2s linear infinite;
+  margin: 0 auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+#result {
+  text-align: center;
+  font-weight: bold;
+  font-size: 18px;
+  margin-top: 20px;
+}
+
+#uploadedImage {
+  max-width: 500px;
+  display: block;
+  margin: 0 auto;
+  margin-top: 20px;
+}
+  </style>
+</body>
+</html>
